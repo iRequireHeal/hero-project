@@ -15,8 +15,10 @@ function App() {
 
   function deleteTask(id)
   {
-      delete tasks[id];
+      tasks.splice(0,1);
+      alert(tasks.length);
   }
+
   const taskItems = tasks.map((task) =>
       <div>
           <div className={style.taskList}>
@@ -25,10 +27,11 @@ function App() {
           </div>
           <div className={style.taskButtons}>
               <button className={style.edit}>Edit</button>
-              <button className={style.delete} onClick={()=> delete (task.id)}>Delete</button>
+              <button className={style.delete} onClick={()=>  setTasks([tasks.splice(2,1)])}>Delete</button>
           </div>
       </div>
   );
+
 
   return (
         <div className= {style.Tasks}>
@@ -46,9 +49,7 @@ function App() {
               <div className={style.list}>
                   <p className={style.remaining}>  Tasks remaining</p>
               </div>
-
               <ul className={style.list}>{taskItems}</ul>
-
           </div>
         </div>
     )
