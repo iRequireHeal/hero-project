@@ -3,7 +3,7 @@ import style from './style.module.css'
 import React, { useState } from 'react';
 
 function App() {
-
+    const [num , setNum] = useState(0);
   const [inputValue, setValue] = useState("wewe");                                                                                                                                                                                                                                                       
   const [tasks, setTasks] = useState([
     {id: 1, name: 'Проснуца', isReady: false},
@@ -13,23 +13,30 @@ function App() {
     {id: 5, name: 'Спац', isReady: false}
   ]);
 
-  function deleteTask(id)
-  {
-      delete tasks[id];
-  }
   const taskItems = tasks.map((task) =>
       <div>
           <div className={style.taskList}>
-             <input type="checkbox" className={style.list_item} />
+             <input type="checkbox" className={style.list_item} onChange={() => setTasks(tasks.map(i=>i.id == task.id ? Object.assign({}, i, {isReady: true}): i))} />
               <p className={style.taskName}>{task.name}</p>
           </div>
           <div className={style.taskButtons}>
-              <button className={style.edit}>Edit</button>
-              <button className={style.delete} onClick={()=> delete (task.id)}>Delete</button>
+              <button className={style.edit} onClick={()=> setTasks(tasks.map(i=>i.id == task.id ? Object.assign({}, i, {name: inputValue}): i))}>Edit</button>
+              <button className={style.delete} onClick={()=> setTasks(tasks.filter(t => t.id !== task.id))  }>Delete</button>
           </div>
       </div>
   );
 
+  function chd_arr(change , state)
+  {
+      if(change == "active")
+      {
+          setTasks(tasks.filter(t=>t.isReady !== false));
+      }
+       if (change == "completed")
+       {
+           setTasks(tasks.filter(t=>t.isReady !== true));
+       }
+  }
   return (
         <div className= {style.Tasks}>
           <div className={style.Block}>
@@ -39,16 +46,14 @@ function App() {
                   <button className={style.addButton} onClick={() => setTasks([...tasks, {id: tasks.length+1, name: inputValue, isReady: false}])}>Add task</button>
               </div>
               <div className={style.taskFilter}>
-                  <button className={style.Button}>all</button>
-                  <button className={style.Button}>Active</button>
-                  <button className={style.Button}>Completed</button>
+                  <button className={style.Button} onClick={()=> chd_arr("all", )}>all</button>
+                  <button className={style.Button} onClick={()=> chd_arr("active")}>Active</button>
+                  <button className={style.Button} onClick={()=> chd_arr("completed")}>Completed</button>
               </div>
               <div className={style.list}>
                   <p className={style.remaining}>  Tasks remaining</p>
               </div>
-
               <ul className={style.list}>{taskItems}</ul>
-
           </div>
         </div>
     )
